@@ -35,8 +35,8 @@ spare  = 0 # spare
 LCD_pos = 3 # KEEPS TRACK OF POSITION IN LCD DISPLAY
 save = 0 # SAVE PARAMETERS
 stop = 0 # EXIT BACK TO PARAMETERS
-list_pos = 2 # KEEPS TRACK OF SPOOL_SIZE
-spool_size = [56, 76, 96, 256]# 500g, 750g, 1000g, 3000g SPOOL
+list_pos = 2
+spool_size = [36, 56, 96, 200]# 500g, 750g, 1000g, 3000g SPOOL
 
 def LCD_text_update(pos0, pos1, row1, pos3, pos4, row2):
     lcd.clear()
@@ -90,14 +90,12 @@ def start_winder_motor():
 def winder_motor_test():
     stop = 0
     while stop == 0:
-        # winder_motor_sensor.value() = 1
         if left_btn.value() == 0:
             LCD_text_update(2, 0, "start", 2, 1, "winder")
             continue
         elif left_btn.value() == 1:
             stop = 1
             LCD_text_update(2, 0, "stop relay", 2, 1, "for winder")
-        sleep(0.3)
            
 def winder():
     while True:    
@@ -151,6 +149,7 @@ while save == 0:
                     if counter != number_steps:
                         while counter != number_steps:
                             if one_turn_sensor.value() == 0:
+                                print('sensor påverkad counting up')
                                 stepper_motor.right(steps_per_turn)
                                 counter+=steps_per_turn
                                 cnt_stp = "Cnt: "+str(counter) + " stp: " + str(number_steps)
@@ -159,6 +158,7 @@ while save == 0:
                             elif reset_btn.value():
                                 save = 0
                                 counter = number_steps
+                                print("STOPP")
                                 LCD_text_update(0, 0, "STOP", 0, 0, "STOPP")
                                 speaker.stops()
                                 sleep(0.3)
@@ -169,6 +169,7 @@ while save == 0:
                     elif counter == number_steps:
                         while counter != 0:#
                             if one_turn_sensor.value() == 0:
+                                print('sensor påverkad counting down')
                                 stepper_motor.left(steps_per_turn)
                                 counter-=steps_per_turn
                                 cnt_stp = "Cnt: "+str(counter) + " stp: " + str(number_steps)
@@ -177,6 +178,7 @@ while save == 0:
                             elif reset_btn.value():
                                 counter = 0
                                 save = 0
+                                print("STOPP")
                                 LCD_text_update(0, 0, "STOP", 0, 0, "STOPP")
                                 speaker.stops()
                                 sleep(0.3)
