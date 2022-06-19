@@ -144,10 +144,10 @@ while save == 0:
             LCD_text_update(4, 0, "Running", 4, 1, "program")
             counter = 0
             while stop == 0:
-                if one_turn_sensor.value():
+                if one_turn_sensor.value() == 0:
                     if counter != number_steps:
                         while counter != number_steps:
-                            if one_turn_sensor.value():
+                            if one_turn_sensor.value() == 0:
                                 print('sensor påverkad counting up')
                                 stepper_motor.right(steps_per_turn)
                                 counter+=steps_per_turn
@@ -167,7 +167,7 @@ while save == 0:
                                 continue
                     elif counter == number_steps:
                         while counter != 0:#
-                            if one_turn_sensor.value():
+                            if one_turn_sensor.value() == 0:
                                 print('sensor påverkad counting down')
                                 stepper_motor.left(steps_per_turn)
                                 counter-=steps_per_turn
